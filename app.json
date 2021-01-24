@@ -1,4 +1,13 @@
 {
-  "name": "Atmanirbhar",
-  "displayName": "Atmanirbhar"
+  "name": "AtmaNirbhar",
+  "displayName": "AtmaNirbhar",
+  "owner": "vikas.singhai",
+  "expo": {
+    "name": "AtmaNirbhar",
+    "slug": "AtmaNirbhar",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ]
+  }
 }
