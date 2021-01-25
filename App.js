@@ -23,13 +23,15 @@ const Drawer = createDrawerNavigator();
 const NavigationDrawerStructure = (props) => {
   //Structure for the navigatin Drawer
   const toggleDrawer = () => {
-    //Props to open/close the drawer
+    //Props to open/close the drawerwer();
     props.navigationProps.toggleDrawer();
   };
+ 
 
   return (
     // Return main method.
     // for first page
+    //from manoj
     <View style={{ flexDirection: "row" }}>
       <TouchableOpacity onPress={toggleDrawer}>
         {/*Donute Button Image */}
