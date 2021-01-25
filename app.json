@@ -9,6 +9,7 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "description": "AtmaNirbhar React Native app."
+    "description": "AtmaNirbhar React Native app.",
+    "githubUrl": "https://github.com/jagadeeshwarr95/Atmanirbhar"
   }
 }
