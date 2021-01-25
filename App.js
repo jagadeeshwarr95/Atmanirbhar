@@ -10,7 +10,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
-import FirstPage from "./pages/FirstPage";
+import HomeScreen from "./pages/HomeScreen";
 import SecondPage from "./pages/SecondPage";
 import ThirdPage from "./pages/ThirdPage";
 
@@ -26,7 +26,6 @@ const NavigationDrawerStructure = (props) => {
     //Props to open/close the drawerwer();
     props.navigationProps.toggleDrawer();
   };
- 
 
   return (
     // Return main method.
@@ -49,12 +48,12 @@ const NavigationDrawerStructure = (props) => {
 
 function firstScreenStack({ navigation }) {
   return (
-    <Stack.Navigator initialRouteName="FirstPage">
+    <Stack.Navigator initialRouteName="HomeScreen">
       <Stack.Screen
-        name="FirstPage"
-        component={FirstPage}
+        name="HomeScreen"
+        component={HomeScreen}
         options={{
-          title: "First Page", //Set Header Title
+          title: "Home Screen", //Set Header Title
           headerLeft: () => (
             <NavigationDrawerStructure navigationProps={navigation} />
           ),
@@ -117,8 +116,8 @@ function App() {
         drawerContent={(props) => <CustomSidebarMenu {...props} />}
       >
         <Drawer.Screen
-          name="FirstPage"
-          options={{ drawerLabel: "First page Option" }}
+          name="HomeScreen"
+          options={{ drawerLabel: "Home page Option" }}
           component={firstScreenStack}
         />
         <Drawer.Screen
