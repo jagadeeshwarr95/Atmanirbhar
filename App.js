@@ -24,8 +24,9 @@ const NavigationDrawerStructure = (props) => {
   //Structure for the navigatin Drawer
   const toggleDrawer = () => {
     //Props to open/close the drawerwer();
-  };
     props.navigationProps.toggleDrawer();
+  };
+ 
 
   return (
     // Return main method.
