@@ -28,7 +28,9 @@ const NavigationDrawerStructure = (props) => {
     props.navigationProps.toggleDrawer();
 
   return (
-    // Return main method for first page.
+    // Return main method.
+    // for first page
+    //from manoj
     <View style={{ flexDirection: "row" }}>
       <TouchableOpacity onPress={toggleDrawer}>
         {/*Donute Button Image */}
