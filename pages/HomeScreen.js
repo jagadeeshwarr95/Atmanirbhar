@@ -1,5 +1,5 @@
 // Import React and Component
-import React from "react";
+import React from 'react';
 import {
   SafeAreaView,
   StyleSheet,
@@ -10,16 +10,17 @@ import {
   Image,
   PermissionsAndroid,
   TouchableOpacity,
-} from "react-native";
+  Platform,
+} from 'react-native';
 const requestVoicePermission = async () => {
   try {
     const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
     );
     if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log("You can use the Voice recording");
+      console.log('You can use the Voice recording');
     } else {
-      console.log("Voice recording permission denied");
+      console.log('Voice recording permission denied');
     }
   } catch (err) {
     console.warn(err);
@@ -31,34 +32,36 @@ class HomeScreen extends React.Component {
     super(props);
     this.state = {
       data: [],
-      search: "",
+      search: '',
       showRecordButton: false,
-      text: "",
+      text: '',
     };
   }
 
   async componentDidMount() {
-    requestVoicePermission;
-    console.log("Permission :: ", this.state.showRecordButton);
+    if (Platform.OS === 'android') {
+      requestVoicePermission;
+      console.log('Permission :: ', this.state.showRecordButton);
+    }
     this.fetchApiCall();
   }
 
   submitAndClear = () => {
     this.setState({
-      text: "",
+      text: '',
     });
   };
 
   fetchApiCall() {
     fetch(
-      "https://eu-api.contentstack.com/v3/content_types?include_count=false",
+      'https://eu-api.contentstack.com/v3/content_types?include_count=false',
       {
-        method: "GET",
+        method: 'GET',
         headers: {
-          api_key: "blt2859d03ab4b50744",
-          access_token: "cs19d22a50588d335f97ce8839",
+          api_key: 'blt2859d03ab4b50744',
+          access_token: 'cs19d22a50588d335f97ce8839',
         },
-      }
+      },
     )
       .then((response) => response.json())
       .then((response) => {
@@ -78,12 +81,12 @@ class HomeScreen extends React.Component {
         <View style={stylesList.containerSearch}>
           <TouchableOpacity activeOpacity={0.5} onPress={this.submitAndClear}>
             <Image
-              source={require("../assets/search.png")}
+              source={require('../assets/search.png')}
               style={stylesList.searchIcon}
             />
           </TouchableOpacity>
           <TextInput
-            onChangeText={(text) => this.setState({ text })}
+            onChangeText={(text) => this.setState({text})}
             value={this.state.text}
             clearButtonMode="always"
             placeholder="Search"
@@ -91,10 +94,9 @@ class HomeScreen extends React.Component {
           />
           <TouchableOpacity
             activeOpacity={0.5}
-            onPress={requestVoicePermission}
-          >
+            onPress={requestVoicePermission}>
             <Image
-              source={require("../assets/voice.png")}
+              source={require('../assets/voice.png')}
               style={stylesList.searchVoiceIcon}
             />
           </TouchableOpacity>
@@ -105,12 +107,12 @@ class HomeScreen extends React.Component {
             <FlatList
               style={stylesList.flatList}
               data={this.state.data}
-              renderItem={({ item }) => (
+              renderItem={({item}) => (
                 <View>
                   <Text style={stylesList.title}>{item.title}</Text>
                   <FlatList
                     data={item.schema}
-                    renderItem={({ item }) => (
+                    renderItem={({item}) => (
                       <View>
                         <Text style={stylesList.listText}>
                           {item.display_name}
@@ -133,142 +135,142 @@ class HomeScreen extends React.Component {
 const stylesList = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   listText: {
-    alignContent: "center",
-    justifyContent: "center",
+    alignContent: 'center',
+    justifyContent: 'center',
     fontSize: 15,
-    color: "navy",
+    color: 'navy',
   },
   subCardContainer: {
-    alignItems: "center",
+    alignItems: 'center',
     marginTop: 10,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   subContainer: {
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   title: {
-    marginTop: "10%",
+    marginTop: '10%',
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     marginLeft: 5,
   },
   subTitle: {
     fontSize: 18,
-    color: "#fff",
+    color: '#fff',
     marginLeft: 55,
   },
   cardOne: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     width: 160,
     height: 100,
     margin: 10,
-    backgroundColor: "#1793EB",
+    backgroundColor: '#1793EB',
     borderRadius: 15,
   },
   cardTwo: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     width: 160,
     height: 100,
     margin: 10,
-    backgroundColor: "#0EDB43",
+    backgroundColor: '#0EDB43',
     borderRadius: 15,
   },
   cardThree: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     width: 160,
     height: 100,
     margin: 10,
-    backgroundColor: "#62F202",
+    backgroundColor: '#62F202',
     borderRadius: 15,
   },
   cardFour: {
-    alignSelf: "flex-start",
+    alignSelf: 'flex-start',
     width: 160,
     height: 100,
     margin: 10,
-    backgroundColor: "#E8E002",
+    backgroundColor: '#E8E002',
     borderRadius: 15,
   },
   cardContent: {
-    flexDirection: "row",
+    flexDirection: 'row',
     marginLeft: 30,
     marginTop: 30,
   },
   taskTitle: {
     fontSize: 20,
-    alignItems: "flex-end",
-    fontWeight: "bold",
+    alignItems: 'flex-end',
+    fontWeight: 'bold',
     marginTop: 30,
-    color: "black",
+    color: 'black',
     marginLeft: 10,
   },
   containerTask: {
-    justifyContent: "space-between",
-    flexDirection: "row",
+    justifyContent: 'space-between',
+    flexDirection: 'row',
   },
   task: {
     fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "left",
+    fontWeight: 'bold',
+    textAlign: 'left',
     marginTop: 30,
-    color: "black",
+    color: 'black',
     marginLeft: 30,
   },
   viewAll: {
     fontSize: 20,
-    fontWeight: "bold",
-    textAlign: "right",
+    fontWeight: 'bold',
+    textAlign: 'right',
     marginTop: 30,
-    color: "#1B94EB",
+    color: '#1B94EB',
     marginRight: 30,
   },
   parentView: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: 40,
     marginBottom: 10,
   },
   flatList: {
-    width: "100%",
+    width: '100%',
   },
   listItem: {
     flex: 1,
     marginRight: 30,
     marginLeft: 30,
-    backgroundColor: "white",
+    backgroundColor: 'white',
     padding: 10,
   },
   searchIcon: {
     height: 30,
     width: 30,
     margin: 5,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   searchVoiceIcon: {
     height: 30,
     width: 20,
     margin: 5,
-    backgroundColor: "white",
+    backgroundColor: 'white',
   },
   containerSearch: {
-    flexDirection: "row",
-    width: "90%",
+    flexDirection: 'row',
+    width: '90%',
     padding: 10,
-    backgroundColor: "white",
-    alignContent: "center",
+    backgroundColor: 'white',
+    alignContent: 'center',
     marginTop: 20,
-    alignItems: "center",
+    alignItems: 'center',
     borderWidth: 2,
-    borderColor: "#FF5722",
+    borderColor: '#FF5722',
     borderRadius: 20,
   },
   searchBarText: {
-    backgroundColor: "white",
+    backgroundColor: 'white',
     flex: 1,
   },
 });
