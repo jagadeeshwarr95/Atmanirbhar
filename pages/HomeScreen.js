@@ -1,18 +1,53 @@
 // Import React and Component
 import React from "react";
-import { SafeAreaView, StyleSheet, View, Text, FlatList } from "react-native";
+import {
+  SafeAreaView,
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  TextInput,
+  Image,
+  PermissionsAndroid,
+  TouchableOpacity,
+} from "react-native";
+const requestVoicePermission = async () => {
+  try {
+    const granted = await PermissionsAndroid.request(
+      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO
+    );
+    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("You can use the Voice recording");
+    } else {
+      console.log("Voice recording permission denied");
+    }
+  } catch (err) {
+    console.warn(err);
+  }
+};
 
 class HomeScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       data: [],
+      search: "",
+      showRecordButton: false,
+      text: "",
     };
   }
 
-  componentDidMount() {
+  async componentDidMount() {
+    requestVoicePermission;
+    console.log("Permission :: ", this.state.showRecordButton);
     this.fetchApiCall();
   }
+
+  submitAndClear = () => {
+    this.setState({
+      text: "",
+    });
+  };
 
   fetchApiCall() {
     fetch(
@@ -27,7 +62,7 @@ class HomeScreen extends React.Component {
     )
       .then((response) => response.json())
       .then((response) => {
-        console.log(response.content_types);
+        //console.log(response.content_types);
         this.setState({
           data: response.content_types,
         });
@@ -40,8 +75,32 @@ class HomeScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={stylesList.container}>
+        <View style={stylesList.containerSearch}>
+          <TouchableOpacity activeOpacity={0.5} onPress={this.submitAndClear}>
+            <Image
+              source={require("../assets/search.png")}
+              style={stylesList.searchIcon}
+            />
+          </TouchableOpacity>
+          <TextInput
+            onChangeText={(text) => this.setState({ text })}
+            value={this.state.text}
+            clearButtonMode="always"
+            placeholder="Search"
+            style={stylesList.searchBarText}
+          />
+          <TouchableOpacity
+            activeOpacity={0.5}
+            onPress={requestVoicePermission}
+          >
+            <Image
+              source={require("../assets/voice.png")}
+              style={stylesList.searchVoiceIcon}
+            />
+          </TouchableOpacity>
+        </View>
+
         <View style={stylesList.container}>
-          {/* <Text style={stylesList.title}>{this.state.data.title}</Text> */}
           <View style={stylesList.parentView}>
             <FlatList
               style={stylesList.flatList}
@@ -183,6 +242,34 @@ const stylesList = StyleSheet.create({
     marginLeft: 30,
     backgroundColor: "white",
     padding: 10,
+  },
+  searchIcon: {
+    height: 30,
+    width: 30,
+    margin: 5,
+    backgroundColor: "white",
+  },
+  searchVoiceIcon: {
+    height: 30,
+    width: 20,
+    margin: 5,
+    backgroundColor: "white",
+  },
+  containerSearch: {
+    flexDirection: "row",
+    width: "90%",
+    padding: 10,
+    backgroundColor: "white",
+    alignContent: "center",
+    marginTop: 20,
+    alignItems: "center",
+    borderWidth: 2,
+    borderColor: "#FF5722",
+    borderRadius: 20,
+  },
+  searchBarText: {
+    backgroundColor: "white",
+    flex: 1,
   },
 });
 

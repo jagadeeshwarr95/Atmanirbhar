@@ -1,15 +1,4 @@
 {
-  "name": "AtmaNirbhar",
-  "displayName": "AtmaNirbhar",
-  "owner": "vikas.singhai",
-  "expo": {
-    "name": "AtmaNirbhar",
-    "slug": "AtmaNirbhar",
-    "version": "1.0.0",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "description": "AtmaNirbhar React Native app.",
-    "githubUrl": "https://github.com/jagadeeshwarr95/Atmanirbhar"
-  }
+  "name": "Atmanirbhar",
+  "displayName": "Atmanirbhar"
 }
