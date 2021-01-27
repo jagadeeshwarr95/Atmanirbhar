@@ -15,6 +15,10 @@ import AvailService from './pages/AvailService';
 // Import Custom Sidebar
 import CustomSidebarMenu from './CustomSidebarMenu';
 
+import {LogBox} from 'react-native';
+LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+LogBox.ignoreAllLogs(); //Ignore all log notifications
+
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
 
