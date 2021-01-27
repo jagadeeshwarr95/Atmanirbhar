@@ -12,7 +12,7 @@ export default class AvailService extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoading: false,
+      visible: false,
     };
   }
 
@@ -46,11 +46,9 @@ export default class AvailService extends React.Component {
 
   ActivityIndicatorElement = () => {
     return (
-      <ActivityIndicator
-        color="#009688"
-        size="large"
-        style={styles.activityIndicatorStyle}
-      />
+      <View style={styles.activityIndicatorStyle}>
+        <ActivityIndicator color="#009688" size="large" />
+      </View>
     );
   };
 
@@ -59,6 +57,7 @@ export default class AvailService extends React.Component {
       <SafeAreaView style={{flex: 1}}>
         <View style={styles.container}>
           <WebView
+            style={{flex: 1}}
             //Loading URL
             source={{
               uri:
@@ -74,11 +73,10 @@ export default class AvailService extends React.Component {
             javaScriptEnabled={true}
             //For the Cache
             domStorageEnabled={true}
-            //View to show while loading the webpage
-            renderLoading={this.ActivityIndicatorElement}
-            //Want to show the view or not
-            startInLoadingState={true}
+            onLoadStart={() => this.setState({visible: true})}
+            onLoad={() => this.setState({visible: false})}
           />
+          {this.state.visible ? <this.ActivityIndicatorElement /> : null}
         </View>
       </SafeAreaView>
     );
@@ -92,6 +90,15 @@ const styles = StyleSheet.create({
   },
   activityIndicatorStyle: {
     flex: 1,
+    position: 'absolute',
+    marginLeft: 'auto',
+    marginRight: 'auto',
+    marginTop: 'auto',
+    marginBottom: 'auto',
+    left: 0,
+    right: 0,
+    top: 0,
+    bottom: 0,
     justifyContent: 'center',
   },
 });
