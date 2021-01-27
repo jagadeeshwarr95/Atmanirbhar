@@ -43,11 +43,10 @@ const styles = StyleSheet.create({
   },
   containerSearch: {
     flexDirection: 'row',
-    width: '90%',
+    width: '100%',
     padding: 10,
     backgroundColor: 'white',
     alignContent: 'center',
-    marginTop: 20,
     alignItems: 'center',
     borderWidth: 2,
     borderColor: '#FF5722',

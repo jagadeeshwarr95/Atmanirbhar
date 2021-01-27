@@ -1,6 +1,3 @@
-// Custom Navigation Drawer / Sidebar with Image and Icon in Menu Options
-// https://aboutreact.com/custom-navigation-drawer-sidebar-with-image-and-icon-in-menu-options/
-
 import 'react-native-gesture-handler';
 
 import * as React from 'react';
@@ -53,7 +50,7 @@ function firstScreenStack({navigation}) {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          title: 'Home Screen', //Set Header Title
+          title: 'VR', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerStructure navigationProps={navigation} />
           ),
@@ -90,7 +87,7 @@ function secondScreenStack({navigation}) {
         name="SecondPage"
         component={SecondPage}
         options={{
-          title: 'Second Page', //Set Header Title
+          title: 'Home', //Set Header Title
         }}
       />
       <Stack.Screen
@@ -114,14 +111,14 @@ function App() {
         }}
         drawerContent={(props) => <CustomSidebarMenu {...props} />}>
         <Drawer.Screen
-          name="HomeScreen"
-          options={{drawerLabel: 'Home page Option'}}
-          component={firstScreenStack}
+          name="SecondPage"
+          options={{drawerLabel: 'Home'}}
+          component={secondScreenStack}
         />
         <Drawer.Screen
-          name="SecondPage"
-          options={{drawerLabel: 'Second page Option'}}
-          component={secondScreenStack}
+          name="HomeScreen"
+          options={{drawerLabel: 'VR'}}
+          component={firstScreenStack}
         />
       </Drawer.Navigator>
     </NavigationContainer>

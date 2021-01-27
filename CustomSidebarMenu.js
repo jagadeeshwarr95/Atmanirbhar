@@ -1,6 +1,3 @@
-// Custom Navigation Drawer / Sidebar with Image and Icon in Menu Options
-// https://aboutreact.com/custom-navigation-drawer-sidebar-with-image-and-icon-in-menu-options/
-
 import React from 'react';
 import {
   SafeAreaView,
@@ -33,12 +30,12 @@ const CustomSidebarMenu = (props) => {
         <DrawerItemList {...props} />
         <DrawerItem
           label="Visit Us"
-          onPress={() => Linking.openURL('https://aboutreact.com/')}
+          onPress={() => Linking.openURL('https://nsdcindia.org/')}
         />
         <View style={styles.customItem}>
           <Text
             onPress={() => {
-              Linking.openURL('https://aboutreact.com/');
+              Linking.openURL('https://nsdcindia.org/');
             }}>
             Rate Us
           </Text>
