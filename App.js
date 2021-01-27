@@ -10,6 +10,7 @@ import {createDrawerNavigator} from '@react-navigation/drawer';
 import HomeScreen from './pages/HomeScreen';
 import SecondPage from './pages/SecondPage';
 import ThirdPage from './pages/ThirdPage';
+import AvailService from './pages/AvailService';
 
 // Import Custom Sidebar
 import CustomSidebarMenu from './CustomSidebarMenu';
@@ -101,6 +102,30 @@ function secondScreenStack({navigation}) {
   );
 }
 
+function availService({navigation}) {
+  return (
+    <Stack.Navigator initialRouteName="HomeScreen">
+      <Stack.Screen
+        name="AvailService"
+        component={AvailService}
+        options={{
+          title: 'Avail Service', //Set Header Title
+          headerLeft: () => (
+            <NavigationDrawerStructure navigationProps={navigation} />
+          ),
+          headerStyle: {
+            backgroundColor: '#f4511e', //Set Header color
+          },
+          headerTintColor: '#fff', //Set Header text color
+          headerTitleStyle: {
+            fontWeight: 'bold', //Set Header text style
+          },
+        }}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function App() {
   return (
     <NavigationContainer>
@@ -119,6 +144,11 @@ function App() {
           name="HomeScreen"
           options={{drawerLabel: 'VR'}}
           component={firstScreenStack}
+        />
+        <Drawer.Screen
+          name="AvailService"
+          options={{drawerLabel: 'Avail Service'}}
+          component={availService}
         />
       </Drawer.Navigator>
     </NavigationContainer>
