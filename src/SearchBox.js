@@ -130,7 +130,7 @@ const SearchBox = ({currentRefinement, refine}) => {
           }}
           onEndEditing={refine(updateRecordValue)}
           value={updateRecordValue}
-          placeholder="Search your query by voice"
+          placeholder="कृपया सर्च करे"
           style={styles.searchBarText}
         />
         <TouchableHighlight
