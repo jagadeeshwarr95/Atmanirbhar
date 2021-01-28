@@ -50,7 +50,7 @@ const InfiniteHits = ({hits, hasMore, refine}) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [paused, setPaused] = useState(true);
-  const [playerState, setPlayerState] = useState(PLAYER_STATES.PLAYING);
+  const [playerState, setPlayerState] = useState(PLAYER_STATES.PAUSED);
   const [screenType, setScreenType] = useState('content');
 
   const onSeek = (seek) => {
