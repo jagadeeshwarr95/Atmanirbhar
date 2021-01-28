@@ -28,7 +28,7 @@ export default class HomeScreen extends Component<ComponentState> {
     super(props);
 
     this.state = {
-      url: 'https://skarredghost.com/AR/red.html',
+      url: 'https://bhagwan.glitch.me',
       statusBarStyle: 'dark-content',
     };
   }
