@@ -1,278 +1,149 @@
-// Import React and Component
-import React from 'react';
+import React, {Component} from 'react';
 import {
-  SafeAreaView,
+  Platform,
   StyleSheet,
   View,
-  Text,
-  FlatList,
-  TextInput,
+  Alert,
+  StatusBar,
+  Linking,
+  TouchableHighlight,
   Image,
-  PermissionsAndroid,
-  TouchableOpacity,
-  Platform,
 } from 'react-native';
-const requestVoicePermission = async () => {
-  try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.RECORD_AUDIO,
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      console.log('You can use the Voice recording');
-    } else {
-      console.log('Voice recording permission denied');
-    }
-  } catch (err) {
-    console.warn(err);
-  }
+import {InAppBrowser} from 'react-native-inappbrowser-reborn';
+
+const instructions = Platform.select({
+  ios: 'Press Cmd+R to reload,\n' + 'Cmd+D or shake for dev menu',
+  android:
+    'Double tap R on your keyboard to reload,\n' +
+    'Shake or press menu button for dev menu',
+});
+
+type ComponentState = {
+  url: string,
+  statusBarStyle: string,
 };
 
-class HomeScreen extends React.Component {
+export default class HomeScreen extends Component<ComponentState> {
   constructor(props) {
     super(props);
+
     this.state = {
-      data: [],
-      search: '',
-      showRecordButton: false,
-      text: '',
+      url: 'https://skarredghost.com/AR/red.html',
+      statusBarStyle: 'dark-content',
     };
   }
 
-  async componentDidMount() {
-    if (Platform.OS === 'android') {
-      requestVoicePermission;
-      console.log('Permission :: ', this.state.showRecordButton);
-    }
-    this.fetchApiCall();
+  sleep(timeout: number) {
+    return new Promise((resolve) => setTimeout(resolve, timeout));
   }
 
-  submitAndClear = () => {
-    this.setState({
-      text: '',
-    });
-  };
-
-  fetchApiCall() {
-    fetch(
-      'https://eu-api.contentstack.com/v3/content_types?include_count=false',
-      {
-        method: 'GET',
-        headers: {
-          api_key: 'blt2859d03ab4b50744',
-          access_token: 'cs19d22a50588d335f97ce8839',
-        },
-      },
-    )
-      .then((response) => response.json())
-      .then((response) => {
-        //console.log(response.content_types);
-        this.setState({
-          data: response.content_types,
+  async openLink() {
+    const {url, statusBarStyle} = this.state;
+    try {
+      if (await InAppBrowser.isAvailable()) {
+        // A delay to change the StatusBar when the browser is opened
+        const animated = true;
+        const delay = animated && Platform.OS === 'ios' ? 400 : 0;
+        setTimeout(() => StatusBar.setBarStyle('light-content'), delay);
+        const result = await InAppBrowser.open(url, {
+          // iOS Properties
+          dismissButtonStyle: 'cancel',
+          preferredBarTintColor: '#453AA4',
+          preferredControlTintColor: 'white',
+          readerMode: true,
+          animated,
+          modalPresentationStyle: 'fullScreen',
+          modalTransitionStyle: 'flipHorizontal',
+          modalEnabled: true,
+          enableBarCollapsing: true,
+          // Android Properties
+          showTitle: true,
+          toolbarColor: '#6200EE',
+          secondaryToolbarColor: 'black',
+          enableUrlBarHiding: true,
+          enableDefaultShare: false,
+          forceCloseOnRedirection: false,
+          toolbar: 'no',
+          // Specify full animation resource identifier(package:anim/name)
+          // or only resource name(in case of animation bundled with app).
+          animations: {
+            startEnter: 'slide_in_right',
+            startExit: 'slide_out_left',
+            endEnter: 'slide_in_left',
+            endExit: 'slide_out_right',
+          },
+          headers: {
+            'my-custom-header': 'my custom header value',
+          },
+          hasBackButton: true,
+          browserPackage: null,
+          showInRecents: false,
         });
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+        // A delay to show an alert when the browser is closed
+        await this.sleep(800);
+        //Alert.alert('Response', JSON.stringify(result));
+      } else {
+        Linking.openURL(url);
+      }
+    } catch (error) {
+      console.error(error);
+      Alert.alert(error.message);
+    } finally {
+      // Restore the previous StatusBar of the App
+      StatusBar.setBarStyle(statusBarStyle);
+    }
   }
 
   render() {
+    const {statusBarStyle} = this.state;
+    this.openLink();
     return (
-      <SafeAreaView style={stylesList.container}>
-        <View style={stylesList.containerSearch}>
-          <TouchableOpacity activeOpacity={0.5} onPress={this.submitAndClear}>
-            <Image
-              source={require('../assets/search.png')}
-              style={stylesList.searchIcon}
-            />
-          </TouchableOpacity>
-          <TextInput
-            onChangeText={(text) => this.setState({text})}
-            value={this.state.text}
-            clearButtonMode="always"
-            placeholder="Search"
-            style={stylesList.searchBarText}
-          />
-          <TouchableOpacity
-            activeOpacity={0.5}
-            onPress={requestVoicePermission}>
-            <Image
-              source={require('../assets/voice.png')}
-              style={stylesList.searchVoiceIcon}
-            />
-          </TouchableOpacity>
-        </View>
+      <View style={styles.container}>
+        <StatusBar barStyle={statusBarStyle} />
 
-        <View style={stylesList.container}>
-          <View style={stylesList.parentView}>
-            <FlatList
-              style={stylesList.flatList}
-              data={this.state.data}
-              renderItem={({item}) => (
-                <View>
-                  <Text style={stylesList.title}>{item.title}</Text>
-                  <FlatList
-                    data={item.schema}
-                    renderItem={({item}) => (
-                      <View>
-                        <Text style={stylesList.listText}>
-                          {item.display_name}
-                        </Text>
-                      </View>
-                    )}
-                    keyExtractor={(item, index) => item + index}
-                  />
-                </View>
-              )}
-              keyExtractor={(item, index) => item + index}
+        <View style={styles.openButton}>
+          <TouchableHighlight
+            activeOpacity={0.5}
+            height="50"
+            width="50"
+            onPress={() => this.openLink()}>
+            <Image
+              source={require('../assets/ar.png')}
+              style={styles.searchVoiceIcon}
             />
-          </View>
+          </TouchableHighlight>
         </View>
-      </SafeAreaView>
+      </View>
     );
   }
 }
 
-const stylesList = StyleSheet.create({
+const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  listText: {
-    alignContent: 'center',
-    justifyContent: 'center',
-    fontSize: 15,
-    color: 'navy',
-  },
-  subCardContainer: {
-    alignItems: 'center',
-    marginTop: 10,
-    backgroundColor: 'white',
-  },
-  subContainer: {
-    flexDirection: 'row',
-  },
-  title: {
-    marginTop: '10%',
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginLeft: 5,
-  },
-  subTitle: {
-    fontSize: 18,
-    color: '#fff',
-    marginLeft: 55,
-  },
-  cardOne: {
-    alignSelf: 'flex-start',
-    width: 160,
-    height: 100,
-    margin: 10,
-    backgroundColor: '#1793EB',
-    borderRadius: 15,
-  },
-  cardTwo: {
-    alignSelf: 'flex-start',
-    width: 160,
-    height: 100,
-    margin: 10,
-    backgroundColor: '#0EDB43',
-    borderRadius: 15,
-  },
-  cardThree: {
-    alignSelf: 'flex-start',
-    width: 160,
-    height: 100,
-    margin: 10,
-    backgroundColor: '#62F202',
-    borderRadius: 15,
-  },
-  cardFour: {
-    alignSelf: 'flex-start',
-    width: 160,
-    height: 100,
-    margin: 10,
-    backgroundColor: '#E8E002',
-    borderRadius: 15,
-  },
-  cardContent: {
-    flexDirection: 'row',
-    marginLeft: 30,
-    marginTop: 30,
-  },
-  taskTitle: {
-    fontSize: 20,
-    alignItems: 'flex-end',
-    fontWeight: 'bold',
-    marginTop: 30,
-    color: 'black',
-    marginLeft: 10,
-  },
-  containerTask: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
-  task: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'left',
-    marginTop: 30,
-    color: 'black',
-    marginLeft: 30,
-  },
-  viewAll: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    textAlign: 'right',
-    marginTop: 30,
-    color: '#1B94EB',
-    marginRight: 30,
-  },
-  parentView: {
-    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    marginTop: 40,
-    marginBottom: 10,
+    backgroundColor: '#F5FCFF',
+    padding: 30,
   },
-  flatList: {
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+  urlInput: {
+    height: 40,
     width: '100%',
+    borderColor: 'gray',
+    borderWidth: 1,
   },
-  listItem: {
-    flex: 1,
-    marginRight: 30,
-    marginLeft: 30,
-    backgroundColor: 'white',
-    padding: 10,
-  },
-  searchIcon: {
-    height: 30,
-    width: 30,
-    margin: 5,
-    backgroundColor: 'white',
-  },
-  searchVoiceIcon: {
-    height: 30,
-    width: 20,
-    margin: 5,
-    backgroundColor: 'white',
-  },
-  containerSearch: {
-    flexDirection: 'row',
-    width: '90%',
-    padding: 10,
-    backgroundColor: 'white',
-    alignContent: 'center',
-    marginTop: 20,
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#FF5722',
-    borderRadius: 20,
-  },
-  searchBarText: {
-    backgroundColor: 'white',
-    flex: 1,
+  openButton: {
+    paddingTop: Platform.OS === 'ios' ? 0 : 20,
+    paddingBottom: Platform.OS === 'ios' ? 0 : 20,
   },
 });
-
-export default HomeScreen;

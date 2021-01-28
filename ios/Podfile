@@ -46,6 +46,8 @@ target 'Atmanirbhar' do
 
   pod 'react-native-webview', :path => '../node_modules/react-native-webview'
 
+  pod 'RNInAppBrowser', :path => '../node_modules/react-native-inappbrowser-reborn'
+
   target 'AtmanirbharTests' do
     inherit! :complete
     # Pods for testing

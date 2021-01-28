@@ -55,7 +55,7 @@ function firstScreenStack({navigation}) {
         name="HomeScreen"
         component={HomeScreen}
         options={{
-          title: 'VR', //Set Header Title
+          title: 'AR', //Set Header Title
           headerLeft: () => (
             <NavigationDrawerStructure navigationProps={navigation} />
           ),
@@ -146,7 +146,7 @@ function App() {
         />
         <Drawer.Screen
           name="HomeScreen"
-          options={{drawerLabel: 'VR'}}
+          options={{drawerLabel: 'AR'}}
           component={firstScreenStack}
         />
         <Drawer.Screen
