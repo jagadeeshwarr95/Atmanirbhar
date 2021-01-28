@@ -28,7 +28,7 @@ export default class HomeScreen extends Component<ComponentState> {
     super(props);
 
     this.state = {
-      url: 'https://skarredghost.com/AR/red.html',
+      url: 'https://atmanirbhar-skill.glitch.me',
       statusBarStyle: 'dark-content',
     };
   }
@@ -48,7 +48,7 @@ export default class HomeScreen extends Component<ComponentState> {
         const result = await InAppBrowser.open(url, {
           // iOS Properties
           dismissButtonStyle: 'cancel',
-          preferredBarTintColor: '#453AA4',
+          preferredBarTintColor: '#f4511e',
           preferredControlTintColor: 'white',
           readerMode: true,
           animated,
@@ -58,7 +58,7 @@ export default class HomeScreen extends Component<ComponentState> {
           enableBarCollapsing: true,
           // Android Properties
           showTitle: true,
-          toolbarColor: '#6200EE',
+          toolbarColor: '#f4511e',
           secondaryToolbarColor: 'black',
           enableUrlBarHiding: true,
           enableDefaultShare: false,
